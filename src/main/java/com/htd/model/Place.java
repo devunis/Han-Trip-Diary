@@ -27,6 +27,7 @@ public class Place {
     @ManyToOne
     private Memory memory;
 
+    @Builder
     public Place(Long id, String name, String call, String description, String picture, String tag, String price, Memory memory) {
         this.id = id;
         this.name = name;

@@ -1,5 +1,6 @@
 package com.htd.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Memory {
     @ManyToOne
     private User writer;
 
+    @Builder
     public Memory(Long id, String title, String content, Scope scope, String picture, User writer) {
         this.id = id;
         this.title = title;
