@@ -1,5 +1,6 @@
 package com.htd.controller;
 
+import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
 import com.htd.service.UserService;
@@ -24,7 +25,10 @@ public class UserController {
         return new ResponseEntity<>(service.insertUser(dto), HttpStatus.ACCEPTED);
     }
 
-//    @PostMapping("/login")
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserLoginDto dto){
+        return new ResponseEntity<>(service.login(dto),HttpStatus.ACCEPTED);
+    }
 
 
     @PutMapping("/modify/{id}")

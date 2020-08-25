@@ -1,7 +1,9 @@
 package com.htd.service;
 
+import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
+import com.htd.jwt.JwtTokenProvider;
 import com.htd.model.Role;
 import com.htd.model.User;
 import com.htd.repository.UserRepository;
@@ -11,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public List<User> getAllData() {
@@ -59,4 +64,13 @@ public class UserService {
             return Long.MIN_VALUE;
         }
   }
+
+    public String login(UserLoginDto dto) {
+        User user = repository.findByUidOrEmail(dto.getUid(), dto.getUid())
+                .orElseThrow(()-> new IllegalArgumentException("아이디를 찾을 수 없습니다."));
+        if (!encoder.matches(dto.getPwd(), user.getPwd())){
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        return jwtTokenProvider.createToken(user.getUsername(),new ArrayList<>(Collections.singleton(user.getRole().toString())));
+    }
 }

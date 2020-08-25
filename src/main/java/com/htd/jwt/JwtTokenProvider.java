@@ -22,7 +22,7 @@ import java.util.List;
 public class JwtTokenProvider {
     private String secretKey = "webfirewall";
 
-    private Long tokenValidTime = 30 * 60 * 1000L;
+    final Long tokenValidTime = 30 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
