@@ -17,8 +17,11 @@ public class Memory {
     private Long id;
     private String title;
     private String content;
-    private Scope scope;
     private String picture;
+
+    @Enumerated(EnumType.STRING)
+    private Scope scope;
+
 
     @ManyToOne
     private User writer;
