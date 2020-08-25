@@ -17,7 +17,6 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity<?> getAllData(){
         return new ResponseEntity<>(service.getAllData(), HttpStatus.ACCEPTED);
-
     }
 
     @PostMapping("/signup")
