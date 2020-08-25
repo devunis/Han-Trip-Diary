@@ -11,25 +11,35 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter @Setter
 @Entity
-public class Memory {
+public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
-    private Scope scope;
     private String picture;
 
+    @Enumerated(EnumType.STRING)
+    private Scope scope;
+
+
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User writer;
 
     @Builder
-    public Memory(Long id, String title, String content, Scope scope, String picture, User writer) {
+    public Diary(Long id, String title, String content, Scope scope, String picture, User writer) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.scope = scope;
         this.picture = picture;
         this.writer = writer;
+    }
+
+    public Diary addDiaryToUser(User user) {
+        this.writer = user;
+        user.getDiaries().add(this);
+        return this;
     }
 }

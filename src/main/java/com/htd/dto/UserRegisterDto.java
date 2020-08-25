@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-
 public class UserRegisterDto {
     private String uid;
     private String pwd;

@@ -1,12 +1,15 @@
 package com.htd.service;
 
+import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
+import com.htd.dto.UserResponseDto;
 import com.htd.model.Role;
 import com.htd.model.User;
 import com.htd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +20,8 @@ import java.util.List;
 @Slf4j
 public class UserService {
     private final UserRepository repository;
+    private final PasswordEncoder encoder;
+
 
     @Transactional
     public List<User> getAllData() {
@@ -24,18 +29,25 @@ public class UserService {
     }
 
     @Transactional
-    public Long insertUser(final UserRegisterDto udto) {
+    public Long insertUser(final UserRegisterDto dto) {
         return repository.save(
-                udto.toUserEntity()).getId();
+                User.builder()
+                        .uid(dto.getUid())
+                        .pwd(encoder.encode(dto.getPwd()))
+                        .email(dto.getEmail())
+                        .name(dto.getName())
+                        .role(Role.GUEST)
+                        .build()
+                ).getId();
     }
 
     @Transactional
-    public Long modifyUser(UserModifyDto userModifyDto, Long id) {
+    public Long modifyUser(UserModifyDto dto, Long id) {
         User user = repository.getOne(id);
-        user.setEmail(userModifyDto.getEmail());
-        user.setName(userModifyDto.getName());
-        user.setPwd(userModifyDto.getPwd());
-        log.info(userModifyDto.getPwd());
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setPwd(encoder.encode(dto.getPwd()));
+        log.info(dto.getPwd());
         log.info(user.getPwd());
         return user.getId();
     }
@@ -47,7 +59,26 @@ public class UserService {
            repository.delete(temp);
            return temp.getId();
         }catch(Exception e){
-            return 6787L;
+            return Long.MIN_VALUE;
         }
   }
+
+    public String loginUser(UserLoginDto dto) {
+            User temp = repository.findByUidOrEmail(dto.getUid(), dto.getUid());
+            log.info(temp.getPwd());
+            log.info(dto.getPwd());
+            if(encoder.matches(dto.getPwd(),temp.getPwd())){
+                System.out.println("로그인 성공~");
+                return "성공~~~~~~~~~~~";
+            }
+            return "아이디나 비밀번호가 틀립니다.";
+    }
+
+    public UserResponseDto findAllUserDiaries(Long userId) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("asdfdas"));
+
+        return UserResponseDto.userResponseDto(user);
+
+    }
 }

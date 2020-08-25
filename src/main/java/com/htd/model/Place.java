@@ -25,10 +25,10 @@ public class Place {
     private String price;
 
     @ManyToOne
-    private Memory memory;
+    private Diary memory;
 
     @Builder
-    public Place(Long id, String name, String call, String description, String picture, String tag, String price, Memory memory) {
+    public Place(Long id, String name, String call, String description, String picture, String tag, String price, Diary memory) {
         this.id = id;
         this.name = name;
         this.call = call;

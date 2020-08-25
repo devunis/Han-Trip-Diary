@@ -1,5 +1,6 @@
 package com.htd.controller;
 
+import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
 import com.htd.model.User;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class UserController {
     private final UserService service;
 
@@ -23,16 +24,21 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> insertUser(@RequestBody final UserRegisterDto userRegisterDto){
-        return new ResponseEntity<>(service.insertUser(userRegisterDto), HttpStatus.ACCEPTED);
-
+    public ResponseEntity<?> insertUser(@RequestBody final UserRegisterDto dto){
+        return new ResponseEntity<>(service.insertUser(dto), HttpStatus.ACCEPTED);
     }
+
+   @PostMapping("/login")
+   public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
+        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.ACCEPTED);
+   }
+
 
     @PutMapping("/modify/{id}")
     public ResponseEntity<?> modifyUser(
             @PathVariable Long id
-            ,@RequestBody final UserModifyDto userModifyDto){
-        return new ResponseEntity<>(service.modifyUser(userModifyDto,id), HttpStatus.ACCEPTED);
+            ,@RequestBody final UserModifyDto dto){
+        return new ResponseEntity<>(service.modifyUser(dto,id), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

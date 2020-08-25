@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter @Setter
@@ -13,6 +14,7 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     private String uid;
     private String pwd;
@@ -20,6 +22,9 @@ public class User {
     private String name;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Diary> diaries;
 
     @Builder
     public User(Long id, String uid, String pwd, String email, String name, Role role) {
