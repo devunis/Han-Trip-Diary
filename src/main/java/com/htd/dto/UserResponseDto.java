@@ -37,8 +37,8 @@ public class UserResponseDto {
                 .name(user.getName())
                 .role(user.getRole().name())
                 .diaries(user.getDiaries().stream()
-                .map(DiaryShowDto::diaryShowDtoMapper)
-                .collect(Collectors.toList()))
+                    .map(DiaryShowDto::diaryShowDtoMapper)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

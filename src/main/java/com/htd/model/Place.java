@@ -25,6 +25,7 @@ public class Place {
     private String price;
 
     @ManyToOne
+    @JoinColumn(name="place_id")
     private Diary memory;
 
     @Builder
@@ -37,5 +38,12 @@ public class Place {
         this.tag = tag;
         this.price = price;
         this.memory = memory;
+    }
+
+    public Place addPlaceToDiary(Diary diary){
+        this.memory = diary;
+        diary.getPlaces().add(this);
+        return this;
+
     }
 }
