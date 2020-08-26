@@ -1,10 +1,7 @@
 package com.htd.model;
 
 import com.sun.el.stream.Stream;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
 @Entity
 public class User implements UserDetails {
@@ -27,26 +24,30 @@ public class User implements UserDetails {
     private String email;
     private String name;
 
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "writer")
     private List<Diary> diaries;
 
     @Builder
-    public User(Long id, String username, String pwd, String email, String name, Role role) {
+    public User(Long id, String username, String pwd, String email, String name) {
         this.id = id;
         this.username = username;
         this.pwd = pwd;
         this.email = email;
         this.name = name;
-        this.role = role;
+        this.roles.add(Role.USER.name());
+    }
+
+    public User() {
+        this.roles.add(Role.USER.name());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> list = new ArrayList<>();
-        list.add(role.name());
-        return list.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
@@ -58,6 +59,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return this.username;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

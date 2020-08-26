@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserResponseDto {
     private Long id;
-    private String uid;
+    private String username;
     private String email;
     private String name;
     private String role;
     private List<DiaryShowDto> diaries;
 
     @Builder
-    public UserResponseDto(Long id, String uid, String email, String name, String role, List<DiaryShowDto> diaries) {
+    public UserResponseDto(Long id, String username, String email, String name, String role, List<DiaryShowDto> diaries) {
         this.id = id;
-        this.uid = uid;
+        this.username = username;
         this.email = email;
         this.name = name;
         this.role = role;

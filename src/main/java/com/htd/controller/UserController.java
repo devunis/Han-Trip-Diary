@@ -25,10 +25,10 @@ public class UserController {
         return new ResponseEntity<>(service.insertUser(dto), HttpStatus.ACCEPTED);
     }
 
-//   @PostMapping("/login")
-//   public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
-//        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.ACCEPTED);
-//   }
+   @PostMapping("/login")
+   public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
+        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.ACCEPTED);
+   }
 
 
     @PutMapping("/modify/{id}")

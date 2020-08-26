@@ -30,7 +30,6 @@ public class UserRegisterDto {
                 .name(name)
                 .pwd(pwd)
                 .username(username)
-                .role(Role.USER)
                 .build();
     }
 

@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -29,8 +30,8 @@ public class UserService {
 
 
     @Transactional
-    public List<User> getAllData() {
-        return repository.findAll();
+    public List<UserResponseDto> getAllData() {
+        return repository.findAll().stream().map(x -> UserResponseDto.userResponseDto(x)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -41,7 +42,6 @@ public class UserService {
                         .pwd(encoder.encode(dto.getPwd()))
                         .email(dto.getEmail())
                         .name(dto.getName())
-                        .role(Role.GUEST)
                         .build()
                 ).getId();
     }
@@ -68,16 +68,16 @@ public class UserService {
         }
   }
 
-//    public String loginUser(UserLoginDto dto) {
-//            User temp = repository.findByUsernameOrEmail(dto.getUid(), dto.getUid()).orElseThrow(()->new RuntimeException("can't find id"));
-//            log.info(temp.getPwd());
-//            log.info(dto.getPwd());
-//            if(encoder.matches(dto.getPwd(),temp.getPwd())){
-//                System.out.println("로그인 성공~");
-//                return "성공~~~~~~~~~~~";
-//            }
-//            return "아이디나 비밀번호가 틀립니다.";
-//    }
+    public String loginUser(UserLoginDto dto) {
+        User user = repository.findByUsernameOrEmail(dto.getUsername(), dto.getUsername())
+                .orElseThrow(() -> new RuntimeException("can't find username : " + dto.getUsername() ));
+        if (! encoder.matches(dto.getPwd(), user.getPassword())){
+            throw new RuntimeException("wrong password! ");
+        }
+        log.warn(user.getRoles().toString());
+        return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+
+    }
 
     public UserResponseDto findAllUserDiaries(Long userId) {
         User user = repository.findById(userId)
