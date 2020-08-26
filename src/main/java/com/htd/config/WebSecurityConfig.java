@@ -32,14 +32,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //h2 디비 연동 추가
         http.cors().and()
                 .csrf().disable()
+                .headers().frameOptions().disable().and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/register/**").permitAll()
+                .antMatchers("/h2/**").permitAll()
                 .anyRequest().permitAll();
     }
 }

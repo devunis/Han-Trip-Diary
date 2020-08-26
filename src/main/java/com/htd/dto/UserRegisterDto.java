@@ -10,16 +10,15 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-
 public class UserRegisterDto {
-    private String uid;
+    private String username;
     private String pwd;
     private String email;
     private String name;
 
     @Builder
-    public UserRegisterDto(String uid, String pwd, String email, String name) {
-        this.uid = uid;
+    public UserRegisterDto(String username, String pwd, String email, String name) {
+        this.username = username;
         this.pwd = pwd;
         this.email = email;
         this.name = name;
@@ -30,7 +29,7 @@ public class UserRegisterDto {
                 .email(email)
                 .name(name)
                 .pwd(pwd)
-                .uid(uid)
+                .username(username)
                 .role(Role.USER)
                 .build();
     }

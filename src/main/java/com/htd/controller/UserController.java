@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class UserController {
     private final UserService service;
 
@@ -25,10 +25,10 @@ public class UserController {
         return new ResponseEntity<>(service.insertUser(dto), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto dto){
-        return new ResponseEntity<>(service.login(dto),HttpStatus.ACCEPTED);
-    }
+//   @PostMapping("/login")
+//   public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
+//        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.ACCEPTED);
+//   }
 
 
     @PutMapping("/modify/{id}")

@@ -8,12 +8,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter @Setter
 public class UserLoginDto {
-    private String uid;
+    private String username;
     private String pwd;
 
     @Builder
-    public UserLoginDto(String uid, String pwd) {
-        this.uid = uid;
+    public UserLoginDto(String username, String pwd) {
+        this.username = username;
         this.pwd = pwd;
     }
 }
