@@ -7,7 +7,6 @@ import com.htd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService service;
 
-    @GetMapping("/info")
+    @GetMapping("api/info")
     public ResponseEntity<?> getAllData(){
         return new ResponseEntity<>(service.getAllData(), HttpStatus.ACCEPTED);
     }
