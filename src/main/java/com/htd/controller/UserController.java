@@ -3,6 +3,7 @@ package com.htd.controller;
 import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
+import com.htd.dto.UserResponseDto;
 import com.htd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService service;
 
-    @GetMapping("/info")
+    @GetMapping("/member")
     public ResponseEntity<?> getAllData(){
         return new ResponseEntity<>(service.getAllData(), HttpStatus.ACCEPTED);
     }
@@ -31,16 +32,21 @@ public class UserController {
    }
 
 
-    @PutMapping("/modify/{id}")
+    @PutMapping("/member/{id}")
     public ResponseEntity<?> modifyUser(
             @PathVariable Long id
             ,@RequestBody final UserModifyDto dto){
         return new ResponseEntity<>(service.modifyUser(dto,id), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/member/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         return new ResponseEntity<>(service.deleteUser(id), HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("member/{id}")
+    public UserResponseDto findAllUserDiaries(@PathVariable Long id) {
+        Long userId = 1L;
+        return service.findAllUserDiaries(userId);
+    }
 }

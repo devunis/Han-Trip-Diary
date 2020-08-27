@@ -54,6 +54,7 @@ public class UserService {
         user.setPwd(encoder.encode(dto.getPwd()));
         log.info(dto.getPwd());
         log.info(user.getPwd());
+
         return user.getId();
     }
 
@@ -67,7 +68,7 @@ public class UserService {
             return Long.MIN_VALUE;
         }
   }
-
+    @Transactional
     public String loginUser(UserLoginDto dto) {
         User user = repository.findByUsernameOrEmail(dto.getUsername(), dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("can't find username : " + dto.getUsername() ));
@@ -78,12 +79,12 @@ public class UserService {
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 
     }
+        @Transactional
+        public UserResponseDto findAllUserDiaries(Long userId) {
+            User user = repository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("can't find user id : " + userId));
 
-    public UserResponseDto findAllUserDiaries(Long userId) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("can't find user id : " + userId));
+            return UserResponseDto.userResponseDto(user);
 
-        return UserResponseDto.userResponseDto(user);
-
-    }
+        }
 }

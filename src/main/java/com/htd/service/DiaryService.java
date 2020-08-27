@@ -1,5 +1,6 @@
 package com.htd.service;
 
+import com.htd.dto.DiaryModifyDto;
 import com.htd.dto.DiaryShowDto;
 import com.htd.dto.DiaryWriteDto;
 import com.htd.dto.UserRegisterDto;
@@ -46,8 +47,21 @@ public class DiaryService {
         return diary.getId();
 
     }
-//
-//    public Long rewriteDiary(){
-//
-//    }
+
+    @Transactional
+    public Object modifyDiary(DiaryModifyDto dto, Long id) {
+        Diary diary = diaryRepository.getOne(id);
+        diary.setContent(dto.getContent());
+        diary.setPicture(dto.getPicture());
+        diary.setTitle(dto.getTitle());
+
+        return diary.getPlaces();
+    }
+
+    @Transactional
+    public Long deleteDiary(final Long id){
+        if(diaryRepository.existsById(id))
+            diaryRepository.deleteById(id);
+        return  id;
+    }
 }

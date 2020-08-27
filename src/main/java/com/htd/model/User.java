@@ -28,8 +28,13 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "writer")
     private List<Diary> diaries;
+
+    @ManyToOne
+    @JoinColumn(name = "friend_id")
+    private Friend friends;
 
     @Builder
     public User(Long id, String username, String pwd, String email, String name) {
