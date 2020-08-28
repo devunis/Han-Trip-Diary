@@ -3,6 +3,7 @@ package com.htd.controller;
 import com.htd.dto.UserLoginDto;
 import com.htd.dto.UserModifyDto;
 import com.htd.dto.UserRegisterDto;
+import com.htd.dto.UserResponseDto;
 import com.htd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService service;
 
-    @GetMapping("api/info")
+
+    @GetMapping("/member")
     public ResponseEntity<?> getAllData(){
         return new ResponseEntity<>(service.getAllData(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> insertUser(@RequestBody final UserRegisterDto dto){
-        return new ResponseEntity<>(service.insertUser(dto), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.insertUser(dto), HttpStatus.CREATED);
     }
 
    @PostMapping("/login")
@@ -30,16 +32,20 @@ public class UserController {
    }
 
 
-    @PutMapping("/modify/{id}")
+    @PutMapping("/member/{id}")
     public ResponseEntity<?> modifyUser(
             @PathVariable Long id
             ,@RequestBody final UserModifyDto dto){
         return new ResponseEntity<>(service.modifyUser(dto,id), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/member/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         return new ResponseEntity<>(service.deleteUser(id), HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("member/{id}")
+    public ResponseEntity<?> findAllUserDiaries(@PathVariable Long id) {
+        return new ResponseEntity<>(service.findAllUserDiaries(id), HttpStatus.OK);
+    }
 }

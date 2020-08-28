@@ -54,8 +54,15 @@ public class PlaceService {
            return id;
     }
 
-
-//    @Transactional
-//    public Object modifyPlace(PlaceModifyDto placeModifyDto, Long id) {
-//    }
+    @Transactional
+    public Object modifyPlace(PlaceModifyDto placeModifyDto, Long id) {
+        Place place = placeRepository.getOne(id);
+        place.setCall(placeModifyDto.getCall());
+        place.setDescription(placeModifyDto.getDescription());
+        place.setName(placeModifyDto.getName());
+        place.setPicture(placeModifyDto.getPicture());
+        place.setPrice(placeModifyDto.getPrice());
+        place.setTag(placeModifyDto.getTag());
+        return place.getName();
+    }
 }

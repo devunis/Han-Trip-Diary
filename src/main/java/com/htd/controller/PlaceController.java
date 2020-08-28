@@ -15,28 +15,28 @@ public class PlaceController {
     private final PlaceService service;
     //명소의 정보 넣기
 
-    @GetMapping("showplace")
+    @GetMapping("place")
     public ResponseEntity<?> showPlace(){
         return new ResponseEntity<>(service.showPlace(), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("addplace")
+    @PostMapping("place")
     public ResponseEntity<?> addPlace(@RequestBody final PlaceAddDto placeAddDto){
         return new ResponseEntity<>(service.addPlace(1L,placeAddDto), HttpStatus.ACCEPTED);
     }
-    @DeleteMapping("delete")
-    public ResponseEntity<?> deletePlace(@RequestParam("id") final Long id){
+    @DeleteMapping("place/{id}")
+    public ResponseEntity<?> deletePlace(@PathVariable final Long id){
          final Long deletedPlaceId = service.deletePlace(id);
         return deletedPlaceId > 0
                 ? new ResponseEntity<>(deletedPlaceId, HttpStatus.OK)
                 : new ResponseEntity<>(deletedPlaceId, HttpStatus.BAD_REQUEST);
     }
-//
-//    @PutMapping("/modify/{id}")
-//    public ResponseEntity<?> modifyPlace(
-//            @PathVariable Long id
-//            , @RequestBody final PlaceModifyDto placeModifyDto){
-//        return new ResponseEntity<>(service.modifyPlace(placeModifyDto, id ), HttpStatus.ACCEPTED);
-//    }
+
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<?> modifyPlace(
+            @PathVariable Long id
+            , @RequestBody final PlaceModifyDto placeModifyDto){
+        return new ResponseEntity<>(service.modifyPlace(placeModifyDto, id ), HttpStatus.ACCEPTED);
+    }
 
 }

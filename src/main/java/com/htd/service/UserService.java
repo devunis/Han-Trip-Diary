@@ -6,8 +6,10 @@ import com.htd.dto.UserRegisterDto;
 
 import com.htd.jwt.JwtTokenProvider;
 import com.htd.dto.UserResponseDto;
+import com.htd.model.Friend;
 import com.htd.model.Role;
 import com.htd.model.User;
+import com.htd.repository.FriendRepository;
 import com.htd.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,25 +27,32 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService {
     private final UserRepository repository;
+    private final FriendRepository friendRepository;
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
 
 
     @Transactional
     public List<UserResponseDto> getAllData() {
-        return repository.findAll().stream().map(x -> UserResponseDto.userResponseDto(x)).collect(Collectors.toList());
+        return repository.findAll().stream()
+                .map(UserResponseDto::userResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public Long insertUser(final UserRegisterDto dto) {
-        return repository.save(
+        User user = repository.save(
                 User.builder()
                         .username(dto.getUsername())
                         .pwd(encoder.encode(dto.getPwd()))
                         .email(dto.getEmail())
                         .name(dto.getName())
-                        .build()
-                ).getId();
+                        .build());
+        user.setFriends(friendRepository.save(
+                Friend.builder()
+                        .friendList(new ArrayList<>())
+                        .build()));
+        return user.getId();
     }
 
     @Transactional
@@ -52,38 +61,31 @@ public class UserService {
         user.setEmail(dto.getEmail());
         user.setName(dto.getName());
         user.setPwd(encoder.encode(dto.getPwd()));
-        log.info(dto.getPwd());
-        log.info(user.getPwd());
         return user.getId();
     }
 
   @Transactional
   public Long deleteUser(final Long id){
-        try{
-           User temp = repository.getOne(id);
-           repository.delete(temp);
-           return temp.getId();
-        }catch(Exception e){
-            return Long.MIN_VALUE;
-        }
+        User temp = repository.findById(id)
+                .orElseThrow(()-> new RuntimeException("not found exception..."));
+        repository.deleteById(id);
+        return temp.getId();
   }
-
+    @Transactional
     public String loginUser(UserLoginDto dto) {
         User user = repository.findByUsernameOrEmail(dto.getUsername(), dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("can't find username : " + dto.getUsername() ));
         if (! encoder.matches(dto.getPwd(), user.getPassword())){
             throw new RuntimeException("wrong password! ");
         }
-        log.warn(user.getRoles().toString());
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 
     }
+        @Transactional
+        public UserResponseDto findAllUserDiaries(Long userId) {
+            User user = repository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("can't find user id : " + userId));
 
-    public UserResponseDto findAllUserDiaries(Long userId) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("can't find user id : " + userId));
-
-        return UserResponseDto.userResponseDto(user);
-
-    }
+            return UserResponseDto.userResponseDto(user);
+        }
 }

@@ -33,9 +33,9 @@ public class DiaryShowDto {
                 .content(diary.getContent())
                 .picture(diary.getPicture())
                 .title(diary.getTitle())
-                    .places(diary.getPlaces().stream()
-                        .map(PlaceShowDto::placeShowDtoMapper)
-                            .collect(Collectors.toList()))
+                .places(diary.getPlaces().stream()
+                    .map(PlaceShowDto::placeShowDtoMapper)
+                    .collect(Collectors.toList()))
                 .build();
     }
 }

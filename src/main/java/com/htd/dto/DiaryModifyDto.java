@@ -9,13 +9,13 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 
-public class DiararyModifyDto {
+public class DiaryModifyDto {
     private String title;
     private String content;
     private String picture;
 
     @Builder
-    public DiararyModifyDto(String title, String content, String picture) {
+    public DiaryModifyDto(String title, String content, String picture) {
         this.title = title;
         this.content = content;
         this.picture = picture;
