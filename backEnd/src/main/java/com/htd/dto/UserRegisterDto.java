@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRegisterDto {
     private String username;
-    private String pwd;
+    private String password;
     private String email;
     private String name;
 
     @Builder
-    public UserRegisterDto(String username, String pwd, String email, String name) {
+    public UserRegisterDto(String username, String password, String email, String name) {
         this.username = username;
-        this.pwd = pwd;
+        this.password = password;
         this.email = email;
         this.name = name;
     }
@@ -28,7 +28,7 @@ public class UserRegisterDto {
         return User.builder()
                 .email(email)
                 .name(name)
-                .pwd(pwd)
+                .password(password)
                 .username(username)
                 .build();
     }

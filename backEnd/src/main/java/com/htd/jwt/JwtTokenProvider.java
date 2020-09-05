@@ -35,7 +35,8 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles",roles);
         Date now = new Date();
-        return Jwts.builder()
+        return  "Bearer " +
+                Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenValidTime))

@@ -21,14 +21,18 @@ public class UserController {
         return new ResponseEntity<>(service.getAllData(), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/member")
     public ResponseEntity<?> insertUser(@RequestBody final UserRegisterDto dto){
         return new ResponseEntity<>(service.insertUser(dto), HttpStatus.CREATED);
     }
 
    @PostMapping("/login")
    public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
-        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(service.loginUser(dto), HttpStatus.OK);
+   }
+   @PostMapping("/authenticate")
+   public ResponseEntity<?> createAuthenticationToken(@RequestBody UserLoginDto dto) throws Exception {
+        return ResponseEntity.ok(service.authenticate(dto));
    }
 
 

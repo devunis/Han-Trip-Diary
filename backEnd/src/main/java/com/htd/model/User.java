@@ -20,7 +20,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "user_id")
     private Long id;
     private String username;
-    private String pwd;
+    private String password;
     private String email;
     private String name;
 
@@ -37,10 +37,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     private Friend friends;
 
     @Builder
-    public User(Long id, String username, String pwd, String email, String name) {
+    public User(Long id, String username, String password, String email, String name) {
         this.id = id;
         this.username = username;
-        this.pwd = pwd;
+        this.password = password;
         this.email = email;
         this.name = name;
         this.roles.add(Role.USER.name());
@@ -57,7 +57,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.pwd;
+        return this.password;
     }
 
     @Override
