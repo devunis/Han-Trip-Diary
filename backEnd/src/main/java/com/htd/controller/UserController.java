@@ -30,6 +30,7 @@ public class UserController {
    public ResponseEntity<?> loginUser(@RequestBody final UserLoginDto dto){
         return new ResponseEntity<>(service.loginUser(dto), HttpStatus.OK);
    }
+
    @PostMapping("/authenticate")
    public ResponseEntity<?> createAuthenticationToken(@RequestBody UserLoginDto dto) throws Exception {
         return ResponseEntity.ok(service.authenticate(dto));
